@@ -3,6 +3,7 @@ package com.jatinkheradiya.app;
 import com.jatinkheradiya.app.handler.BasicHandler;
 import com.jatinkheradiya.app.handler.CommonHandler;
 import com.jatinkheradiya.app.handler.ServiceRequestHandler;
+import com.jatinkheradiya.app.handler.VehicleHandler;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -17,6 +18,8 @@ public class MyFirstVerticle extends AbstractVerticle {
   ServiceRequestHandler serviceRequestHandler = new ServiceRequestHandler();
 
   CommonHandler commonHandler = new CommonHandler();
+
+  VehicleHandler vehicleHandler = new VehicleHandler();
 
   @Override
   public void start(Future<Void> fut) {
@@ -33,7 +36,7 @@ public class MyFirstVerticle extends AbstractVerticle {
     router.get("/service-requests/:userid").handler(serviceRequestHandler::getServiceRequests);
     router.post("/service-requests").consumes("application/json").handler(serviceRequestHandler::storeServiceRequest);
 
-//    router.post("/vehicles").handler()
+    router.post("/vehicles").handler(vehicleHandler::addVehicle);
 
 //    router.route().last().handler(this.basicHandler::defaultHandle);
 

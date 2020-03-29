@@ -12,7 +12,7 @@
             <property name="javax.persistence.jdbc.user" value="jatin"/>
             <property name="javax.persistence.jdbc.password" value="Jatin@123"/>
             <property name="javax.persistence.schema-generation.database.action" value="update"/>
-<!--            <property name="javax.persistence.schema-generation.scripts.action" value="create"/>-->
+            <!--            <property name="javax.persistence.schema-generation.scripts.action" value="create"/>-->
             <property name="hibernate.hbm2ddl.auto" value="update"/>
 
             <!--            &lt;!&ndash; EclipseLink should create the database schema automatically &ndash;&gt;-->
