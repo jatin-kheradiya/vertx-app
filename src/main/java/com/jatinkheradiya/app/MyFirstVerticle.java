@@ -1,11 +1,13 @@
 package com.jatinkheradiya.app;
 
 import com.jatinkheradiya.app.handler.BasicHandler;
+import com.jatinkheradiya.app.handler.CommonHandler;
 import com.jatinkheradiya.app.handler.ServiceRequestHandler;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 
 
 public class MyFirstVerticle extends AbstractVerticle {
@@ -14,19 +16,32 @@ public class MyFirstVerticle extends AbstractVerticle {
 
   ServiceRequestHandler serviceRequestHandler = new ServiceRequestHandler();
 
+  CommonHandler commonHandler = new CommonHandler();
+
   @Override
   public void start(Future<Void> fut) {
 
     Router router = Router.router(vertx);
 
+    router.route().order(-2).handler(BodyHandler.create());
+    router.options("/*").order(-1).handler(this.basicHandler::optionsHandle);
+
+    router.get("/car-manufacturers").handler(commonHandler::getCarManufacturers);
+    router.get("/car-models").handler(commonHandler::getCarModels);
+
     //		router.get("/").handler(basicHandler::getHomePage);
     router.get("/service-requests/:userid").handler(serviceRequestHandler::getServiceRequests);
+    router.post("/service-requests").consumes("application/json").handler(serviceRequestHandler::storeServiceRequest);
+
+//    router.post("/vehicles").handler()
+
+//    router.route().last().handler(this.basicHandler::defaultHandle);
 
     vertx
         // this createHttpServer creates an HTTP server
         .createHttpServer()
         // any request first comes to the requestHandler
-        .requestHandler(router::accept).listen(8089, result -> {
+        .requestHandler(router::accept).listen(8089, "0.0.0.0", result -> {
       if (result.succeeded()) {
         fut.complete();
       } else {

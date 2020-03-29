@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="persistence-1" transaction-type="RESOURCE_LOCAL">
+        <class>com.jatinkheradiya.app.entities.ServiceRequest</class>
+        <properties>
+            <!-- database connection -->
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/test1"/>
+            <property name="javax.persistence.jdbc.user" value="jatin"/>
+            <property name="javax.persistence.jdbc.password" value="Jatin@123"/>
+            <property name="javax.persistence.schema-generation.database.action" value="update"/>
+<!--            <property name="javax.persistence.schema-generation.scripts.action" value="create"/>-->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!--            &lt;!&ndash; EclipseLink should create the database schema automatically &ndash;&gt;-->
+            <!--            <property name="eclipselink.ddl-generation" value="create-tables"/>-->
+            <!--            <property name="eclipselink.ddl-generation.output-mode" value="database"/>-->
+        </properties>
+
+    </persistence-unit>
+</persistence>

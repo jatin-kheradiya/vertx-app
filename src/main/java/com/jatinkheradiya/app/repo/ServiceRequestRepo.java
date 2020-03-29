@@ -14,4 +14,6 @@ public interface ServiceRequestRepo {
   public JSONObject addServiceRequest(ServiceRequest serviceRequest);
 
   public JSONArray getServiceRequestsWithFilters(final String userId, Map<String, String> filters);
+
+  ServiceRequest storeServiceRequest(ServiceRequest serviceRequest);
 }

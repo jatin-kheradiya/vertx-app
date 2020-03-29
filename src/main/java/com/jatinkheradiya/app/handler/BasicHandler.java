@@ -30,4 +30,18 @@ public class BasicHandler {
 			.setStatusCode(200)
 			.end("Hello Jatin Kheradiya");
 	}
+
+	public void optionsHandle(RoutingContext routingContext) {
+		try {
+			routingContext.response().putHeader("Access-Control-Allow-Origin", "*")
+					.putHeader("Access-Control-Allow-Methods", "GET, POST, PUT , DELETE, OPTIONS")
+					.putHeader("Access-Control-Allow-Headers", "Content-Type,cache-control, x-requested-with")
+					.putHeader("Access-Control-Max-Age", "86400");
+		} catch (final Exception e) {
+			System.out.println("Exception while setting routing context option calls." + e);
+		}
+	}
+
+	public void defaultHandle(RoutingContext routingContext) {
+	}
 }

@@ -28,4 +28,9 @@ public class ServiceRequestRepoImpl implements ServiceRequestRepo {
   public JSONArray getServiceRequestsWithFilters(String userId, Map<String, String> filters) {
     return null;
   }
+
+  @Override
+  public ServiceRequest storeServiceRequest(ServiceRequest serviceRequest) {
+    return databaseLayer.storeServiceRequest(serviceRequest);
+  }
 }

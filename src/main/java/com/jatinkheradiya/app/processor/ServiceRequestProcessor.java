@@ -2,6 +2,7 @@ package com.jatinkheradiya.app.processor;
 
 import org.json.simple.JSONArray;
 
+import com.jatinkheradiya.app.entities.ServiceRequest;
 import com.jatinkheradiya.app.repo.impl.ServiceRequestRepoImpl;
 
 public class ServiceRequestProcessor {
@@ -18,4 +19,7 @@ public class ServiceRequestProcessor {
 		return responseStr;
 	}
 
+  public void storeServiceRequest(ServiceRequest serviceRequest) {
+		serviceRequestRepoImpl.storeServiceRequest(serviceRequest);
+  }
 }
