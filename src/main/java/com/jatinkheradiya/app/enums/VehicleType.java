@@ -1,5 +1,7 @@
 package com.jatinkheradiya.app.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum VehicleType {
 
   CAR("CAR"),
@@ -16,4 +18,13 @@ public enum VehicleType {
     return value;
   }
 
+  @JsonCreator
+  public static VehicleType fromValue(String v) {
+    for (VehicleType myEnum : values()) {
+      if (myEnum.value.equalsIgnoreCase(v)) {
+        return myEnum;
+      }
+    }
+    throw new IllegalArgumentException("invalid string value passed: " + v);
+  }
 }

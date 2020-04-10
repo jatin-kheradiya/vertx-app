@@ -10,7 +10,7 @@ public class UserProcessor {
 	
 	private UserRepoImpl userRepoImpl = new UserRepoImpl();
 	
-	public String getResponse(final String userId) throws VertxAppException {
+	public String getResponse(final long userId) throws VertxAppException {
 
 		String responseStr = "Not found";
 		JSONObject response = userRepoImpl.getUser(userId);
@@ -24,7 +24,7 @@ public class UserProcessor {
 		userRepoImpl.addUser(user);
   }
 
-  public JSONObject getUserById(String userId) throws VertxAppException {
+  public JSONObject getUserById(long userId) throws VertxAppException {
 		return userRepoImpl.getUser(userId);
 	}
 }

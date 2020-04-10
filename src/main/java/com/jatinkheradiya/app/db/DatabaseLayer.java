@@ -15,6 +15,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.simple.JSONArray;
@@ -90,8 +91,8 @@ public class DatabaseLayer {
 
   public ServiceRequest storeServiceRequest(ServiceRequest serviceRequest) {
 
-    String id = RandomStringUtils.randomAlphanumeric(8);
-    serviceRequest.setId(id);
+    long id = RandomUtils.nextLong();
+    serviceRequest.setId("aa");
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence-1");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -196,13 +197,13 @@ public class DatabaseLayer {
 //    return object;
   }
 
-  public <T> T getObjectById(Class<T> clazzValue, String id) throws VertxAppException {
+  public <T> T getObjectById(Class<T> clazzValue, long id) throws VertxAppException {
     Session session = null;
     try {
       SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
       session = sessionFactory.openSession();
       session.beginTransaction();
-      return session.load(clazzValue, id);
+      return session.get(clazzValue, id);
     } catch (Exception e) {
       System.out.println("Error in adding object: " + e.getMessage());
       //      e.printStackTrace();

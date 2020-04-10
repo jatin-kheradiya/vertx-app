@@ -8,9 +8,9 @@ import com.jatinkheradiya.app.exceptions.VertxAppException;
 
 public interface VehicleRepo {
 
-  JSONArray getVehiclesbyUserId(final String userId) throws VertxAppException;
+  JSONArray getVehiclesbyUserId(final long userId) throws VertxAppException;
 
   JSONObject addVehicle(Vehicle vehicle) throws VertxAppException;
 
-  JSONObject getVehicle(final String vehicleId) throws VertxAppException;
+  JSONObject getVehicle(final long vehicleId) throws VertxAppException;
 }

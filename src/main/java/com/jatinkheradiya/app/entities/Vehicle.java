@@ -2,16 +2,24 @@ package com.jatinkheradiya.app.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jatinkheradiya.app.enums.FuelType;
+import com.jatinkheradiya.app.enums.VehicleType;
+
 @Entity
-//@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
 @org.hibernate.annotations.Immutable()
 @Table(name = "vehicle", uniqueConstraints = {
     @UniqueConstraint(columnNames =  "id")
@@ -21,10 +29,11 @@ public class Vehicle implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", unique = true, nullable = false)
-  private int id;
+  private long id;
 
   @Column(name = "type", nullable = false, length = 10)
-  private String type;
+  @Enumerated(EnumType.STRING)
+  private VehicleType type;
 
   @Column(name = "make", nullable = false, length = 50)
   private String make;
@@ -33,34 +42,52 @@ public class Vehicle implements Serializable {
   private String model;
 
   @Column(name = "year", nullable = false, length = 10)
-  private String year;
+  private int year;
 
   @Column(name = "color", nullable = false, length = 20)
   private String color;
 
+  @JsonProperty("fuel_type")
   @Column(name = "fuel_type", nullable = false, length = 10)
-  private String fuelType;
+  @Enumerated(EnumType.STRING)
+  private FuelType fuelType;
 
+  @JsonProperty("registration_number")
   @Column(name = "registration_number", nullable = false, length = 12)
   private String registrationNumber;
 
-  @Column(name = "service_request_ids", nullable = true)
-  private String serviceRequestList;
+  //  @ManyToOne(cascade = CascadeType.ALL, targetEntity = User.class, fetch = FetchType.LAZY)
+  //  @JoinColumn(name = "user_id")
+  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private User user;
+
+////  @Column(name = "service_request_ids")
+////  @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+//  @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+////  @JoinColumn(name = "vehicle_id")
 //  private List<ServiceRequest> serviceRequestList;
 
-  public int getId() {
+//  public List<ServiceRequest> getServiceRequestList() {
+//    return serviceRequestList;
+//  }
+//
+//  public void setServiceRequestList(List<ServiceRequest> serviceRequestList) {
+//    this.serviceRequestList = serviceRequestList;
+//  }
+
+  public long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 
-  public String getType() {
+  public VehicleType getType() {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(VehicleType type) {
     this.type = type;
   }
 
@@ -80,11 +107,11 @@ public class Vehicle implements Serializable {
     this.model = model;
   }
 
-  public String getYear() {
+  public int getYear() {
     return year;
   }
 
-  public void setYear(String year) {
+  public void setYear(int year) {
     this.year = year;
   }
 
@@ -96,11 +123,11 @@ public class Vehicle implements Serializable {
     this.color = color;
   }
 
-  public String getFuelType() {
+  public FuelType getFuelType() {
     return fuelType;
   }
 
-  public void setFuelType(String fuelType) {
+  public void setFuelType(FuelType fuelType) {
     this.fuelType = fuelType;
   }
 
@@ -112,11 +139,11 @@ public class Vehicle implements Serializable {
     this.registrationNumber = registrationNumber;
   }
 
-  public String getServiceRequestList() {
-    return serviceRequestList;
+  public User getUser() {
+    return user;
   }
 
-  public void setServiceRequestList(String serviceRequestList) {
-    this.serviceRequestList = serviceRequestList;
+  public void setUser(User user) {
+    this.user = user;
   }
 }

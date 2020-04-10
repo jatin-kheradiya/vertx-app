@@ -1,5 +1,7 @@
 package com.jatinkheradiya.app.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum FuelType {
 
   PETROL("PETROL"),
@@ -16,6 +18,16 @@ public enum FuelType {
 
   public String getValue() {
     return value;
+  }
+
+  @JsonCreator
+  public static FuelType fromValue(String v) {
+    for (FuelType myEnum : values()) {
+      if (myEnum.value.equalsIgnoreCase(v)) {
+        return myEnum;
+      }
+    }
+    throw new IllegalArgumentException("invalid string value passed: " + v);
   }
 
 }

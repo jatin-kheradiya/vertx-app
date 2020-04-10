@@ -9,5 +9,5 @@ public interface UserRepo {
 
   JSONObject addUser(User user) throws VertxAppException;
 
-  JSONObject getUser(final String userId) throws VertxAppException;
+  JSONObject getUser(final long userId) throws VertxAppException;
 }

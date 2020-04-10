@@ -31,11 +31,6 @@ public class UserHandler {
       String payload = routingContext.getBodyAsString();
       User user = JsonUtil.createObjectFromString(payload, User.class);
       userProcessor.addUser(user);
-
-      //			routingContext.response().end(serviceRequest.getStatus());
-      //      routingContext.response()
-      //          .putHeader(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON_CHARSET_UTF_8)
-      //          .setStatusCode(HttpResponseStatus.OK.code()).end(JsonUtil.createJsonFromObject(user));
       ResponseHandler.sendSuccessResponse(routingContext, user, HttpStatus.SC_CREATED);
     } catch (Exception e) {
       e.printStackTrace();
@@ -45,12 +40,8 @@ public class UserHandler {
 
   public void getUserById(RoutingContext routingContext) {
     try {
-      String userId = routingContext.request().getParam("userId");
+      long userId = Long.parseLong(routingContext.request().getParam("userId"));
       JSONObject user = userProcessor.getUserById(userId);
-
-      //      routingContext.response()
-      //          .putHeader(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON_CHARSET_UTF_8)
-      //          .setStatusCode(HttpResponseStatus.OK.code()).end(JsonUtil.createJsonFromObject(user));
       ResponseHandler.sendSuccessResponse(routingContext, user, HttpStatus.SC_OK);
 
     } catch (Exception e) {

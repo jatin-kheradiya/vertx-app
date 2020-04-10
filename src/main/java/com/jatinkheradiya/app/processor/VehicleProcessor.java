@@ -10,7 +10,7 @@ public class VehicleProcessor {
 	
 	private VehicleRepoImpl vehicleRepoImpl = new VehicleRepoImpl();
 	
-	public String getResponse(final String userId) throws Exception {
+	public String getResponse(final long userId) throws Exception {
 
 		String responseStr = "Not found";
 		JSONArray response = vehicleRepoImpl.getVehiclesbyUserId(userId);
@@ -24,7 +24,7 @@ public class VehicleProcessor {
 		vehicleRepoImpl.addVehicle(vehicle);
   }
 
-  public JSONObject getVehicleById(String vehicleId) throws Exception {
+  public JSONObject getVehicleById(long vehicleId) throws Exception {
 		return vehicleRepoImpl.getVehicle(vehicleId);
 	}
 }
