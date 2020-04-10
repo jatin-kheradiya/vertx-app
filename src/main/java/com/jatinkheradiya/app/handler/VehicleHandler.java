@@ -27,9 +27,10 @@ public class VehicleHandler {
 
   public void addVehicle(RoutingContext routingContext) {
     try {
+      long userId = Long.parseLong(routingContext.request().getParam("userId"));
       String payload = routingContext.getBodyAsString();
       Vehicle vehicle = JsonUtil.createObjectFromString(payload, Vehicle.class);
-      vehicleProcessor.addVehicle(vehicle);
+      vehicleProcessor.addVehicle(vehicle, userId);
       ResponseHandler.sendSuccessResponse(routingContext, vehicle, HttpStatus.SC_CREATED);
     } catch (Exception e) {
       e.printStackTrace();

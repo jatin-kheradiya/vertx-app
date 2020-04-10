@@ -20,8 +20,8 @@ public class VehicleProcessor {
 		return responseStr;
 	}
 
-  public void addVehicle(Vehicle vehicle) throws Exception {
-		vehicleRepoImpl.addVehicle(vehicle);
+  public void addVehicle(Vehicle vehicle, long userId) throws Exception {
+		vehicleRepoImpl.addVehicle(vehicle, userId);
   }
 
   public JSONObject getVehicleById(long vehicleId) throws Exception {

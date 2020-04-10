@@ -10,7 +10,7 @@ public interface VehicleRepo {
 
   JSONArray getVehiclesbyUserId(final long userId) throws VertxAppException;
 
-  JSONObject addVehicle(Vehicle vehicle) throws VertxAppException;
+  JSONObject addVehicle(Vehicle vehicle, long userId) throws VertxAppException;
 
   JSONObject getVehicle(final long vehicleId) throws VertxAppException;
 }

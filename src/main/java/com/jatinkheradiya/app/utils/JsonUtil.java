@@ -1,5 +1,8 @@
 package com.jatinkheradiya.app.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -26,15 +29,16 @@ public class JsonUtil {
       return mapper.readValue(jsonString, clazz);
 
     } catch (Exception e) {
-      //      String incorrectFieldMessage = "The request string is invalid.";
-      //      if (e.getMessage() != null) {
-      //        final Matcher matcher =
-      //            Pattern.compile("Unrecognized field \"(.*?)\"").matcher(e.getMessage());
-      //        if (matcher.find()) {
-      //          incorrectFieldMessage = "";
-      //        }
-      //      }
-      throw new VertxAppException("Error in making Object from json string", e);
+      String incorrectFieldMessage = "The request string is invalid.";
+      if (e.getMessage() != null) {
+        final Matcher matcher =
+            Pattern.compile("Unrecognized field \"(.*?)\"").matcher(e.getMessage());
+        if (matcher.find()) {
+          incorrectFieldMessage = "";
+        }
+      }
+      throw new VertxAppException(
+          "Error in making Object from json string because: " + incorrectFieldMessage, e);
     }
   }
 

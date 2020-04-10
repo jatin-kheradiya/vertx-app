@@ -40,7 +40,7 @@ public class MyFirstVerticle extends AbstractVerticle {
     router.post("/service-requests").consumes("application/json").handler(serviceRequestHandler::storeServiceRequest);
 
     // vehicle routes
-    router.post("/vehicles").handler(vehicleHandler::addVehicle);
+    router.post("/vehicles/:userId").handler(vehicleHandler::addVehicle);
     router.get("/vehicles/:vehicleId").handler(vehicleHandler::getVehicleById);
     router.get("/vehicles/user/:userId").handler(vehicleHandler::getVehicleByUserId);
 

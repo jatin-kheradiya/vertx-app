@@ -1,6 +1,7 @@
 package com.jatinkheradiya.app.entities;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -48,10 +49,10 @@ public class User implements Serializable {
   private String gender;
 
   @Column(name = "login_time", length = 20)
-  private String loginTime;
+  private Date loginTime;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   private List<Vehicle> vehicles;
 
   public long getId() {
@@ -118,11 +119,11 @@ public class User implements Serializable {
     this.gender = gender;
   }
 
-  public String getLoginTime() {
+  public Date getLoginTime() {
     return loginTime;
   }
 
-  public void setLoginTime(String loginTime) {
+  public void setLoginTime(Date loginTime) {
     this.loginTime = loginTime;
   }
 

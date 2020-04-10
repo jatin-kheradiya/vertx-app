@@ -11,10 +11,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jatinkheradiya.app.enums.FuelType;
 import com.jatinkheradiya.app.enums.VehicleType;
@@ -57,7 +63,8 @@ public class Vehicle implements Serializable {
   private String registrationNumber;
 
   //  @ManyToOne(cascade = CascadeType.ALL, targetEntity = User.class, fetch = FetchType.LAZY)
-  //  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", nullable = false)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private User user;
 
@@ -139,11 +146,19 @@ public class Vehicle implements Serializable {
     this.registrationNumber = registrationNumber;
   }
 
+  @JsonIgnore
   public User getUser() {
     return user;
   }
 
+  @JsonIgnore
   public void setUser(User user) {
     this.user = user;
   }
+
+  //getter method to retrieve the UserId
+  public Long getUser_id(){
+    return user.getId();
+  }
+
 }
