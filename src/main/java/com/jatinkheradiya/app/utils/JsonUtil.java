@@ -1,12 +1,10 @@
 package com.jatinkheradiya.app.utils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jatinkheradiya.app.exceptions.VertxAppException;
 
 public class JsonUtil {
 
@@ -23,29 +21,28 @@ public class JsonUtil {
   }
 
   public static synchronized <T> T createObjectFromString(String jsonString, Class<T> clazz)
-      throws Exception {
+      throws VertxAppException {
     try {
       return mapper.readValue(jsonString, clazz);
 
     } catch (Exception e) {
-//      String incorrectFieldMessage = "The request string is invalid.";
-//      if (e.getMessage() != null) {
-//        final Matcher matcher =
-//            Pattern.compile("Unrecognized field \"(.*?)\"").matcher(e.getMessage());
-//        if (matcher.find()) {
-//          incorrectFieldMessage = "";
-//        }
-//      }
-      throw e;
+      //      String incorrectFieldMessage = "The request string is invalid.";
+      //      if (e.getMessage() != null) {
+      //        final Matcher matcher =
+      //            Pattern.compile("Unrecognized field \"(.*?)\"").matcher(e.getMessage());
+      //        if (matcher.find()) {
+      //          incorrectFieldMessage = "";
+      //        }
+      //      }
+      throw new VertxAppException("Error in making Object from json string", e);
     }
   }
 
-  public static synchronized String createJsonFromObject(Object obj)
-      throws Exception {
+  public static synchronized String createJsonFromObject(Object obj) throws VertxAppException {
     try {
       return mapper.writeValueAsString(obj);
     } catch (Exception e) {
-     throw e;
+      throw new VertxAppException("Error in creating json from object for object: " + obj, e);
     }
   }
 

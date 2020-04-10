@@ -85,6 +85,20 @@
 			<version>1.1</version>
 		</dependency>
 
+		<!-- start of dependencies LogBack -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<!-- end of dependencies for LogBack -->
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.6</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -3,6 +3,7 @@ package com.jatinkheradiya.app;
 import com.jatinkheradiya.app.handler.BasicHandler;
 import com.jatinkheradiya.app.handler.CommonHandler;
 import com.jatinkheradiya.app.handler.ServiceRequestHandler;
+import com.jatinkheradiya.app.handler.UserHandler;
 import com.jatinkheradiya.app.handler.VehicleHandler;
 
 import io.vertx.core.AbstractVerticle;
@@ -21,6 +22,8 @@ public class MyFirstVerticle extends AbstractVerticle {
 
   VehicleHandler vehicleHandler = new VehicleHandler();
 
+  UserHandler userHandler = new UserHandler();
+
   @Override
   public void start(Future<Void> fut) {
 
@@ -36,9 +39,16 @@ public class MyFirstVerticle extends AbstractVerticle {
     router.get("/service-requests/:userid").handler(serviceRequestHandler::getServiceRequests);
     router.post("/service-requests").consumes("application/json").handler(serviceRequestHandler::storeServiceRequest);
 
+    // vehicle routes
     router.post("/vehicles").handler(vehicleHandler::addVehicle);
+    router.get("/vehicles/:vehicleId").handler(vehicleHandler::getVehicleById);
+    router.get("/vehicles/user/:userId").handler(vehicleHandler::getVehicleByUserId);
 
-//    router.route().last().handler(this.basicHandler::defaultHandle);
+    // user routes
+    router.post("/users").handler(userHandler::addUser);
+    router.get("/users/:userId").handler(userHandler::getUserById);
+
+    //    router.route().last().handler(this.basicHandler::defaultHandle);
 
     vertx
         // this createHttpServer creates an HTTP server

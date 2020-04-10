@@ -4,10 +4,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.jatinkheradiya.app.entities.Vehicle;
+import com.jatinkheradiya.app.exceptions.VertxAppException;
 
 public interface VehicleRepo {
 
-  public JSONArray getVehicles(final String userId);
+  JSONArray getVehiclesbyUserId(final String userId) throws VertxAppException;
 
-  public JSONObject addVehicle(Vehicle vehicle);
+  JSONObject addVehicle(Vehicle vehicle) throws VertxAppException;
+
+  JSONObject getVehicle(final String vehicleId) throws VertxAppException;
 }

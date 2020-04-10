@@ -1,7 +1,6 @@
 package com.jatinkheradiya.app.entities;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,11 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
-import org.hibernate.annotations.OptimisticLockType;
-
-import com.jatinkheradiya.app.enums.FuelType;
-import com.jatinkheradiya.app.enums.VehicleType;
 
 @Entity
 //@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
@@ -47,7 +41,7 @@ public class Vehicle implements Serializable {
   @Column(name = "fuel_type", nullable = false, length = 10)
   private String fuelType;
 
-  @Column(name = "registraion_number", nullable = false, length = 12)
+  @Column(name = "registration_number", nullable = false, length = 12)
   private String registrationNumber;
 
   @Column(name = "service_request_ids", nullable = true)

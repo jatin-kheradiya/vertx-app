@@ -9,17 +9,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.jatinkheradiya.app.entities.ServiceRequest;
+import com.jatinkheradiya.app.exceptions.VertxAppException;
 //import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class DatabaseLayer {
@@ -141,7 +143,8 @@ public class DatabaseLayer {
   public JSONArray getCarMakeModelMap() {
 
     JSONArray jsonArray = new JSONArray();
-    String sqlQuery = "select make, group_concat(model separator ',') as models from car_make_model_map group by make;";
+    String sqlQuery =
+        "select make, group_concat(model separator ',') as models from car_make_model_map group by make;";
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
@@ -170,5 +173,45 @@ public class DatabaseLayer {
       System.out.println("Class not found" + e);
     }
     return jsonArray;
+  }
+
+  public Object saveObject(Object object) throws VertxAppException {
+    Session session = null;
+    Object dbObject;
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      session = sessionFactory.openSession();
+      session.beginTransaction();
+      dbObject = session.save(object);
+      return object;
+    } catch (Exception e) {
+      System.out.println("Error in adding object: " + e.getMessage());
+      //      e.printStackTrace();
+      throw new VertxAppException("Error in saving the object in DB", e);
+    } finally {
+      if (session != null && session.isOpen()) {
+        session.close();
+      }
+    }
+//    return object;
+  }
+
+  public <T> T getObjectById(Class<T> clazzValue, String id) throws VertxAppException {
+    Session session = null;
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      session = sessionFactory.openSession();
+      session.beginTransaction();
+      return session.load(clazzValue, id);
+    } catch (Exception e) {
+      System.out.println("Error in adding object: " + e.getMessage());
+      //      e.printStackTrace();
+      throw new VertxAppException("Error in saving the object in DB", e);
+    } finally {
+      if (session != null && session.isOpen()) {
+        session.close();
+      }
+    }
+//    return dbObject;
   }
 }
