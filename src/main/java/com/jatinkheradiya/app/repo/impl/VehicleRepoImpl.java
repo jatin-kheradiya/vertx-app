@@ -1,7 +1,9 @@
 package com.jatinkheradiya.app.repo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,8 +25,28 @@ public class VehicleRepoImpl implements VehicleRepo {
 
   @Override
   public JSONArray getVehiclesbyUserId(long userId) throws VertxAppException {
-    JSONArray vehicles = databaseLayer.getServiceRequests("");
-    return vehicles;
+    try {
+      //    JSONArray vehicles = databaseLayer.getServiceRequests("");
+
+      Map<String, Object> andConditions = new HashMap<>();
+//      andConditions.put("make", "Toyota");
+      andConditions.put("model", "Innova-7");
+//      andConditions.put("color", "Black");
+//      andConditions.put("user_id", userId);
+
+      Map<String, Object> orConditions = new HashMap<>();
+      List<Vehicle> vehicles =
+          databaseLayer.getObjectsByParam(andConditions, orConditions, Vehicle.class);
+
+      log.info("vehicles: {}", vehicles);
+      //    return vehicles.toArray();
+      //    return vehicles;
+    } catch (Exception e) {
+      e.printStackTrace();
+      log.error("Error in getting the vehicles for user id: {}, {}", userId, e.getMessage());
+      throw new VertxAppException("Error in getting the vehicles for user id: "+ userId, e);
+    }
+    return null;
   }
 
   @Override

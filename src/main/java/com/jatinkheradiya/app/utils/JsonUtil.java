@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.jatinkheradiya.app.exceptions.VertxAppException;
 
 public class JsonUtil {
@@ -21,6 +22,7 @@ public class JsonUtil {
     mapper.configure(JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    mapper.registerModule(new JodaModule());
   }
 
   public static synchronized <T> T createObjectFromString(String jsonString, Class<T> clazz)

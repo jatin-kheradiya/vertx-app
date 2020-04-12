@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.jatinkheradiya.app.entities.Vehicle;
+import com.jatinkheradiya.app.exceptions.VertxAppException;
 import com.jatinkheradiya.app.repo.impl.VehicleRepoImpl;
 
 public class VehicleProcessor {
@@ -26,5 +27,9 @@ public class VehicleProcessor {
 
   public JSONObject getVehicleById(long vehicleId) throws Exception {
 		return vehicleRepoImpl.getVehicle(vehicleId);
+	}
+
+	public JSONArray getVehiclesUserId(long userId) throws VertxAppException {
+		return vehicleRepoImpl.getVehiclesbyUserId(userId);
 	}
 }

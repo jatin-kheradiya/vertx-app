@@ -1,6 +1,7 @@
 package com.jatinkheradiya.app.handler;
 
 import org.apache.http.HttpStatus;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.jatinkheradiya.app.entities.Vehicle;
@@ -49,11 +50,10 @@ public class VehicleHandler {
     }
   }
 
-  public void getVehicleByUserId(RoutingContext routingContext) {
+  public void getVehiclesByUserId(RoutingContext routingContext) {
     try {
-      long vehicleId = Long.parseLong(routingContext.request().getParam("vehicleId"));
-      JSONObject vehicle = vehicleProcessor.getVehicleById(vehicleId);
-
+      long userId = Long.parseLong(routingContext.request().getParam("userId"));
+      JSONArray vehicle = vehicleProcessor.getVehiclesUserId(userId);
       ResponseHandler.sendSuccessResponse(routingContext, vehicle, HttpStatus.SC_OK);
     } catch (Exception e) {
       ResponseHandler.sendErrorResponse(routingContext, e);

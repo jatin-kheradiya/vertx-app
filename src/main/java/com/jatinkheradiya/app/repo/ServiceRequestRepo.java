@@ -6,14 +6,17 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.jatinkheradiya.app.entities.ServiceRequest;
+import com.jatinkheradiya.app.exceptions.VertxAppException;
 
 public interface ServiceRequestRepo {
 
-  public JSONArray getServiceRequests(final String userId);
+  JSONArray getServiceRequests(final Long vehicleId) throws VertxAppException;
 
-  public JSONObject addServiceRequest(ServiceRequest serviceRequest);
+  JSONObject addServiceRequest(ServiceRequest serviceRequest) throws VertxAppException;
 
-  public JSONArray getServiceRequestsWithFilters(final String userId, Map<String, String> filters);
+  JSONArray getServiceRequestsWithFilters(final String userId, Map<String, String> filters)
+      throws VertxAppException;
 
-  ServiceRequest storeServiceRequest(ServiceRequest serviceRequest);
+  JSONObject storeServiceRequest(ServiceRequest serviceRequest, long vehicleId)
+      throws VertxAppException;
 }

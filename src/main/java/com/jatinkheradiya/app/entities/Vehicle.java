@@ -1,6 +1,7 @@
 package com.jatinkheradiya.app.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,10 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -69,16 +70,17 @@ public class Vehicle implements Serializable {
   private User user;
 
 ////  @Column(name = "service_request_ids")
-////  @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-//  @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+  ////  @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 ////  @JoinColumn(name = "vehicle_id")
-//  private List<ServiceRequest> serviceRequestList;
-
-//  public List<ServiceRequest> getServiceRequestList() {
+//  @OneToMany(mappedBy = "vehicle", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+//  @Column(name = "service_request_ids")
+//  private long[] serviceRequestList;
+//
+//  public long[] getServiceRequestList() {
 //    return serviceRequestList;
 //  }
 //
-//  public void setServiceRequestList(List<ServiceRequest> serviceRequestList) {
+//  public void setServiceRequestList(long[] serviceRequestList) {
 //    this.serviceRequestList = serviceRequestList;
 //  }
 

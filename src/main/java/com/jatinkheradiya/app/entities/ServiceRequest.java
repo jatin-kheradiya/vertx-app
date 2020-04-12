@@ -1,11 +1,18 @@
 package com.jatinkheradiya.app.entities;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
@@ -13,53 +20,64 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ServiceRequest {
 
   @Id
-  @Column(name = "id")
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", unique = true, nullable = false)
+  private long id;
 
-  @Column(name = "vechicle_id")
-  private String vehicleId;
+//  @JoinColumn(name = "vehicle_id", nullable = false)
+//  @OnDelete(action = OnDeleteAction.CASCADE)
+//  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonProperty("vehicle_id")
+  @Column(name = "vehicle_id")
+  private Long vehicleId;
 
+  @JsonProperty("start_time")
   @Column(name = "start_time")
-  private String startTime;
+  @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Kolkata")
+  //  @JsonFormat(shape=JsonFormat.Shape.NATURAL, pattern="s")
+  private Timestamp startTime;
 
+  @JsonProperty("end_time")
   @Column(name = "end_time")
-  private String endTime;
+  @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Kolkata")
+  private Timestamp endTime;
 
-  @Column(name = "status")
+  @Column(name = "status", nullable = false, length = 10)
   private String status;
 
-  @Column(name = "service_provider_name")
+  @JsonProperty("service_provider_name")
+  @Column(name = "service_provider_name", length = 100)
   private String serviceProvider;
 
-  public String getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(long id) {
     this.id = id;
   }
 
-  public String getVehicleId() {
+  public Long getVehicleId() {
     return vehicleId;
   }
 
-  public void setVehicleId(String vehicleId) {
+  public void setVehicleId(Long vehicleId) {
     this.vehicleId = vehicleId;
   }
 
-  public String getStartTime() {
+  public Timestamp getStartTime() {
     return startTime;
   }
 
-  public void setStartTime(String startTime) {
+  public void setStartTime(Timestamp startTime) {
     this.startTime = startTime;
   }
 
-  public String getEndTime() {
+  public Timestamp getEndTime() {
     return endTime;
   }
 
-  public void setEndTime(String endTime) {
+  public void setEndTime(Timestamp endTime) {
     this.endTime = endTime;
   }
 
@@ -78,5 +96,4 @@ public class ServiceRequest {
   public void setServiceProvider(String serviceProvider) {
     this.serviceProvider = serviceProvider;
   }
-
 }

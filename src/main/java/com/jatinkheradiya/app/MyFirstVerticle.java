@@ -36,13 +36,17 @@ public class MyFirstVerticle extends AbstractVerticle {
     router.get("/car-models").handler(commonHandler::getCarModels);
 
     //		router.get("/").handler(basicHandler::getHomePage);
-    router.get("/service-requests/:userid").handler(serviceRequestHandler::getServiceRequests);
-    router.post("/service-requests").consumes("application/json").handler(serviceRequestHandler::storeServiceRequest);
+
+    // service request routes
+//    router.get("/service-requests/user/:userid").handler(serviceRequestHandler::getServiceRequests);
+    router.get("/service-requests/:vehicleId").handler(serviceRequestHandler::getServiceRequests);
+    router.post("/service-requests/:vehicleId").consumes("application/json")
+        .handler(serviceRequestHandler::storeServiceRequest);
 
     // vehicle routes
     router.post("/vehicles/:userId").handler(vehicleHandler::addVehicle);
     router.get("/vehicles/:vehicleId").handler(vehicleHandler::getVehicleById);
-    router.get("/vehicles/user/:userId").handler(vehicleHandler::getVehicleByUserId);
+    router.get("/vehicles/user/:userId").handler(vehicleHandler::getVehiclesByUserId);
 
     // user routes
     router.post("/users").handler(userHandler::addUser);
