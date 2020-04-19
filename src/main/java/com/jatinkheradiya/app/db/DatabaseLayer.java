@@ -1,11 +1,7 @@
 package com.jatinkheradiya.app.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -20,44 +16,18 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jatinkheradiya.app.exceptions.VertxAppException;
-//import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
 public class DatabaseLayer {
 
   private Logger log = LoggerFactory.getLogger(DatabaseLayer.class);
 
-  private static final String URI = "jdbc:mysql://localhost:3306";
+  public DatabaseLayer() {}
 
-  private static final String USERNAME = "jatin";
-
-  private static final String PASSWORD = "Jatin@123";
-
-  //  MysqlDataSource mysqlDataSource = new MysqlDataSource();
-
-  private Connection connection;
-
-  public DatabaseLayer() {
-    try {
-      setConnection();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
-
-
-  private void setConnection() throws SQLException {
-    //    mysqlDataSource.setUser(USERNAME);
-    //    mysqlDataSource.setPassword(PASSWORD);
-    //    //    mysqlDataSource.setServerName("myDBHost.example.org");
-    //    mysqlDataSource.setServerName("localhost/test1");
-  }
 
   //  public JSONArray getServiceRequests(final String userId) {
   //    List<ServiceRequest> serviceRequests = new ArrayList<>();
@@ -90,7 +60,7 @@ public class DatabaseLayer {
   //      e.printStackTrace();
   //    } catch (ClassNotFoundException e) {
   //      e.printStackTrace();
-  //      System.out.println("Class not found" + e);
+  //      log.error("Class not found" + e);
   //    }
   //    return jsonArray;
   //  }
@@ -114,86 +84,53 @@ public class DatabaseLayer {
   //    return null;
   //  }
 
-  public JSONArray getCarManufacturers() {
-    JSONArray jsonArray = new JSONArray();
-
-    String sqlQuery = "select * from test1.car_manufacturers;";
-
-    try {
-      Class.forName("com.mysql.jdbc.Driver");
-      Connection connection =
-          DriverManager.getConnection("jdbc:mysql://localhost:3306/test1", USERNAME, PASSWORD);
-      //        Connection connection = mysqlDataSource.getConnection();
-      Statement statement = connection.createStatement();
-      ResultSet resultSet = statement.executeQuery(sqlQuery);
-      //      resultSet = connection.createStatement().executeQuery(sqlQuery);
-      ResultSetMetaData rsmd = resultSet.getMetaData();
-      while (resultSet.next()) {
-        int numColumns = rsmd.getColumnCount();
-        JSONObject obj = new JSONObject();
-        for (int i = 1; i <= numColumns; i++) {
-          String column_name = rsmd.getColumnLabel(i);
-          obj.put(column_name, resultSet.getObject(column_name));
-        }
-        //			  jsonArray.put(obj);
-        jsonArray.add(obj);
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-      System.out.println("Class not found" + e);
-    }
-    return jsonArray;
-  }
-
-  public JSONArray getCarMakeModelMap() {
-
-    JSONArray jsonArray = new JSONArray();
-    String sqlQuery =
-        "select make, group_concat(model separator ',') as models from car_make_model_map group by make;";
-
-    try {
-      Class.forName("com.mysql.jdbc.Driver");
-      Connection connection =
-          DriverManager.getConnection("jdbc:mysql://localhost:3306/test1", USERNAME, PASSWORD);
-      //        Connection connection = mysqlDataSource.getConnection();
-      Statement statement = connection.createStatement();
-      ResultSet resultSet = statement.executeQuery(sqlQuery);
-      //      resultSet = connection.createStatement().executeQuery(sqlQuery);
-      ResultSetMetaData rsmd = resultSet.getMetaData();
-      while (resultSet.next()) {
-        int numColumns = rsmd.getColumnCount();
-        JSONObject obj = new JSONObject();
-        for (int i = 1; i <= numColumns; i++) {
-          String column_name = rsmd.getColumnLabel(i);
-          obj.put(column_name, resultSet.getObject(column_name));
-        }
-        //			  jsonArray.put(obj);
-        jsonArray.add(obj);
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-      System.out.println("Class not found" + e);
-    }
-    return jsonArray;
-  }
-
-  public Object saveObject(Object object) throws VertxAppException {
+  public List getCarManufacturers() throws VertxAppException {
     Session session = null;
-    Object dbObject;
     try {
       SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
       session = sessionFactory.openSession();
       session.beginTransaction();
-      dbObject = session.save(object);
+      return session.createSQLQuery("select make from vertx_app.car_manufacturers").list();
+    } catch (Exception e) {
+      String errorMessage = "Error in getting entries from DB for car manufacturers";
+      log.error(errorMessage, e.getMessage());
+      throw new VertxAppException(errorMessage, e);
+    } finally {
+      if (session != null && session.isOpen()) {
+        session.close();
+      }
+    }
+  }
+
+  public List getCarMakeModelMap() throws VertxAppException {
+    Session session = null;
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      session = sessionFactory.openSession();
+      session.beginTransaction();
+      return session.createSQLQuery("select make, cast(model as text) from vertx_app.car_make_model_map order by make;")
+          .list();
+    } catch (Exception e) {
+      String errorMessage = "Error in getting entries from DB for car make model map";
+      log.error(errorMessage, e.getMessage());
+      throw new VertxAppException(errorMessage, e);
+    } finally {
+      if (session != null && session.isOpen()) {
+        session.close();
+      }
+    }
+  }
+
+  public Object saveObject(Object object) throws VertxAppException {
+    Session session = null;
+    try {
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      session = sessionFactory.openSession();
+      session.beginTransaction();
+      Object dbObject = session.save(object);
       return object;
     } catch (Exception e) {
-      System.out.println("Error in adding object: " + e.getMessage());
+      log.error("Error in adding object: {}", e.getMessage());
       //      e.printStackTrace();
       throw new VertxAppException("Error in saving the object in DB", e);
     } finally {
@@ -211,7 +148,7 @@ public class DatabaseLayer {
       session.beginTransaction();
       return session.get(clazzValue, id);
     } catch (Exception e) {
-      System.out.println("Error in adding object: " + e.getMessage());
+      log.error("Error in adding object: " + e.getMessage());
       //      e.printStackTrace();
       throw new VertxAppException("Error in saving the object in DB", e);
     } finally {
@@ -238,14 +175,14 @@ public class DatabaseLayer {
       Criterion and = Restrictions.allEq(andConditions);
 
       Criteria criteria = session.createCriteria(clazzValue);
-//      criteria.add(conjunctionAnd);
+      //      criteria.add(conjunctionAnd);
 
       criteria.add(and);
 
       return criteria.list();
     } catch (Exception e) {
       String errorMessage = "Error in getting entities from DB for parameters";
-      System.out.println(errorMessage + e.getMessage());
+      log.error(errorMessage, e.getMessage());
       throw new VertxAppException(errorMessage, e);
     } finally {
       if (session != null && session.isOpen()) {

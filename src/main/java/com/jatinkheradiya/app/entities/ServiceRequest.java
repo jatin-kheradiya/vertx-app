@@ -1,6 +1,5 @@
 package com.jatinkheradiya.app.entities;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -33,9 +32,13 @@ public class ServiceRequest {
 
   @JsonProperty("start_time")
   @Column(name = "start_time")
-  @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Kolkata")
+  @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Kolkata")
   //  @JsonFormat(shape=JsonFormat.Shape.NATURAL, pattern="s")
   private Timestamp startTime;
+
+  @JsonProperty("pickup_timeslot")
+  @Column(name = "pickup_timeslot")
+  private String pickupTimeslot;
 
   @JsonProperty("end_time")
   @Column(name = "end_time")
@@ -48,6 +51,14 @@ public class ServiceRequest {
   @JsonProperty("service_provider_name")
   @Column(name = "service_provider_name", length = 100)
   private String serviceProvider;
+
+  @JsonProperty("service_type")
+  @Column(name = "service_type")
+  private String serviceType;
+
+  @JsonProperty("address")
+  @Column(name = "address")
+  private String address;
 
   public long getId() {
     return id;
@@ -96,4 +107,30 @@ public class ServiceRequest {
   public void setServiceProvider(String serviceProvider) {
     this.serviceProvider = serviceProvider;
   }
+
+  public String getServiceType() {
+    return serviceType;
+  }
+
+  public void setServiceType(String serviceType) {
+    this.serviceType = serviceType;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+
+  public String getPickupTimeslot() {
+    return pickupTimeslot;
+  }
+
+  public void setPickupTimeslot(String pickupTimeslot) {
+    this.pickupTimeslot = pickupTimeslot;
+  }
+
 }

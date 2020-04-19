@@ -11,13 +11,11 @@ public class CommonHandler {
   public void getCarManufacturers(RoutingContext routingContext) {
 
     String response = "";
-
     try {
       response = genericProcessor.getCarManufacturers();
     } catch (Exception e) {
       e.printStackTrace();
     }
-
     routingContext.response().putHeader("Context-Type", "application/json").setStatusCode(200)
         .end(response);
   }
@@ -29,13 +27,11 @@ public class CommonHandler {
 
   public void getCarModels(RoutingContext routingContext) {
     String response = "";
-
     try {
       response = genericProcessor.getCarModels();
     } catch (Exception e) {
       e.printStackTrace();
     }
-
     routingContext.response().putHeader("Context-Type", "application/json").setStatusCode(200)
         .end(response);
   }
